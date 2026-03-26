@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config
+
+data:
+  SERVER_PORT: "8080"
+  DB_HOST: user-db-0.user-db-service.default.svc.cluster.local 
+  DB_PORT: "5432" 
+  DB_USER: postgres
+  DB_NAME: postgres 
+  JWT_EXPIRATION: 24h
+  LOG_LEVEL: info
+  LOG_FORMAT: json

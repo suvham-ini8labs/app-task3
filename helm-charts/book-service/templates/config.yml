@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: book-config
+
+data:
+  SERVER_PORT: "8080" 
+  LOG_LEVEL: info
+  DB_HOST: book-db-0.book-db-service.default.svc.cluster.local 
+  DB_USER: postgres
+  DB_NAME: postgres
+  DB_PORT: "5432" 
+  READ_TIMEOUT: 15s
+  WRITE_TIMEOUT: 15s
+  IDLE_TIMEOUT: 60s
