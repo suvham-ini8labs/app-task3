@@ -66,15 +66,15 @@ jobs:
     - name: deploy with helm [user-service]
       env: 
         KUBECONFIG: .kube/config
-      run: helm upgrade user-service ./user-service --set image_tag=${{ needs.build.outputs.image-tag }}
+      run: helm upgrade user-service ./helm-charts/user-service --set image_tag=${{ needs.build.outputs.image-tag }}
 
     - name: deploy with helm [book-service]
       env: 
         KUBECONFIG: .kube/config
-      run: helm upgrade book-service ./book-service --set image_tag=${{ needs.build.outputs.image-tag }}
+      run: helm upgrade book-service ./helm-charts/book-service --set image_tag=${{ needs.build.outputs.image-tag }}
      
     - name: deploy with helm [order-service]
       env: 
         KUBECONFIG: .kube/config
-      run: helm upgrade order-service ./order-service --set image_tag=${{ needs.build.outputs.image-tag }}
+      run: helm upgrade order-service ./helm-charts/order-service --set image_tag=${{ needs.build.outputs.image-tag }}
        
