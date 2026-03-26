@@ -5,76 +5,31 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  lint:
+    name: Lint 
     runs-on: ubuntu-latest 
-    outputs:
-      image-tag: ${{ steps.tag.outputs.tag }}
-
     steps:
-    - name: checkout code
-      uses: actions/checkout@v6.0.2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v4
-    
-    - name: docker login
-      uses: docker/login-action@v4.0.0
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: generate image tag
-      id: tag
-      run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+      - name: lint [user-service]
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11
+          working-directory: ./user-service
+          args: --timeout=5m 
       
-    - name: build and push [user-service]
-      uses: docker/build-push-action@v7.0.0
-      with:
-        push: true
-        context: ./user-service/
-        tags: spaul76/user-service:${{ steps.tag.outputs.tag }}
-    
-    - name: build and push [book-service]
-      uses: docker/build-push-action@v7.0.0
-      with:
-        push: true
-        context: ./book-service/
-        tags: spaul76/book-service:${{ steps.tag.outputs.tag }}
-    
-    - name: build and push [order-service]
-      uses: docker/build-push-action@v7.0.0
-      with:
-        push: true
-        context: ./order-service/
-        tags: spaul76/order-service:${{ steps.tag.outputs.tag }}
-         
-  deploy:
-    runs-on: self-hosted
-    name: deploy
-    needs: build 
-
-    steps:
-    - name: checkout code
-      uses: actions/checkout@v6.0.2
-
-    - name: save kubeconfig
-      run: |
-        mkdir .kube
-        touch .kube/config
-        echo "${{ secrets.KUBECONFIG }}" > .kube/config
-
-    - name: deploy with helm [user-service]
-      env: 
-        KUBECONFIG: .kube/config
-      run: helm upgrade user-service ./helm-charts/user-service --set image_tag=${{ needs.build.outputs.image-tag }}
-
-    - name: deploy with helm [book-service]
-      env: 
-        KUBECONFIG: .kube/config
-      run: helm upgrade book-service ./helm-charts/book-service --set image_tag=${{ needs.build.outputs.image-tag }}
-     
-    - name: deploy with helm [order-service]
-      env: 
-        KUBECONFIG: .kube/config
-      run: helm upgrade order-service ./helm-charts/order-service --set image_tag=${{ needs.build.outputs.image-tag }}
-       
+      - name: lint [book-service]
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11
+          working-directory: ./book-service
+          args: --timeout=5m 
+      
+      - name: lint [order-service]
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11
+          working-directory: ./order-service
+          args: --timeout=5m 
+  
