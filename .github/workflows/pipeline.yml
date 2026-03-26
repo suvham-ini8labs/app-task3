@@ -11,28 +11,28 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
-      - name: Lint code [user-service]
-        working-directory: ./user-service
-        run: |
-          go mod download
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          golangci-lint run --timeout=5m
 
-      - name: Lint code [book-service]
-        working-directory: ./book-service
-        run: |
-          go mod download
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          golangci-lint run --timeout=5m 
+      - name: lint [user-service]
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11
+          working-directory: ./user-service
+          args: --timeout=5m 
       
-      - name: Lint code [order-service]
-        working-directory: ./order-service
-        run: |
-          go mod download
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          golangci-lint run --timeout=5m 
-
+      - name: lint [book-service]
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11
+          working-directory: ./book-service
+          args: --timeout=5m 
+      
+      - name: lint [order-service]
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11
+          working-directory: ./order-service
+          args: --timeout=5m 
+      
   build-push:
     needs: lint
     runs-on: self-hosted 
