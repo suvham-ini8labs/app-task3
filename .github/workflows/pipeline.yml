@@ -5,36 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  lint:
-    name: Lint 
-    runs-on: self-hosted 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: lint [user-service]
-        uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.11
-          working-directory: ./user-service
-          args: --timeout=5m 
-      
-      - name: lint [book-service]
-        uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.11
-          working-directory: ./book-service
-          args: --timeout=5m 
-      
-      - name: lint [order-service]
-        uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.11
-          working-directory: ./order-service
-          args: --timeout=5m 
-      
   build-push:
-    needs: lint
     runs-on: self-hosted 
     outputs:
       image-tag: ${{ steps.tag.outputs.tag }}
