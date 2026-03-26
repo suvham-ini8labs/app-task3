@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-push:
+  build:
     runs-on: ubuntu-latest 
     outputs:
       image-tag: ${{ steps.tag.outputs.tag }}
@@ -51,7 +51,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     name: deploy
-    needs: build-push 
+    needs: build 
 
     steps:
     - name: checkout code
