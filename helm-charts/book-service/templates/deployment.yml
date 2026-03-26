@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: book-service-container
-        image: spaul76/book-service:{{ .Values.image_tag }}
+        image: "spaul76/book-service:{{ .Values.image_tag }}"
         envFrom:
         - configMapRef:
             name: book-config

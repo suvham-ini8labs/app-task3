@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: order-service-container
-        image: spaul76/order-service:{{ .Values.image_tag }}
+        image: "spaul76/order-service:{{ .Values.image_tag }}"
         envFrom:
         - configMapRef:
             name: order-config
