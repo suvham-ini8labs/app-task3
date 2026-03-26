@@ -15,21 +15,21 @@ jobs:
       - name: lint [user-service]
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.11
+          version: v2.11.4
           working-directory: ./user-service
           args: --timeout=5m 
       
       - name: lint [book-service]
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.11
+          version: v2.11.4
           working-directory: ./book-service
           args: --timeout=5m 
       
       - name: lint [order-service]
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.11
+          version: v2.11.4
           working-directory: ./order-service
           args: --timeout=5m 
   
