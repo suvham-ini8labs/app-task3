@@ -34,6 +34,7 @@ jobs:
           golangci-lint run --timeout=5m 
 
   build-push:
+    needs: lint
     runs-on: self-hosted 
     outputs:
       image-tag: ${{ steps.tag.outputs.tag }}
