@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-
+	"log"
 	"user-service/internal/middleware"
 	"user-service/internal/models"
 	"user-service/internal/service"
@@ -155,21 +155,29 @@ func (h *UserHandlers) Health(w http.ResponseWriter, r *http.Request) {
 	if err := h.service.Health(r.Context()); err != nil {
 		h.logger.Error("Health check failed", "error", err)
 		w.WriteHeader(http.StatusServiceUnavailable)
-		json.NewEncoder(w).Encode(map[string]string{"status": "unhealthy", "error": err.Error()})
+		if encodeErr := json.NewEncoder(w).Encode(map[string]string{"status": "unhealthy", "error": err.Error()}); encodeErr != nil {
+			h.logger.Error("Failed to encode health response", "error", encodeErr)
+		}
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
+	if err := json.NewEncoder(w).Encode(map[string]string{"status": "healthy"}); err != nil {
+		h.logger.Error("Failed to encode health response", "error", err)
+	}
 }
 
 func sendJSON(w http.ResponseWriter, status int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(data)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Print("Failed to encode JSON response")
+	}
 }
 
 func sendError(w http.ResponseWriter, status int, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(models.ErrorResponse{Error: message})
+	if err := json.NewEncoder(w).Encode(models.ErrorResponse{Error: message}); err != nil {
+		log.Print("Failed to encode error response")
+	}
 }

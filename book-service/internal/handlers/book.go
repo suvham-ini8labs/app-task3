@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
+	"fmt"
 	"book-service/internal/models"
 	"book-service/internal/service"
 
@@ -139,12 +139,16 @@ func (h *BookHandlers) Health(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.service.Health(ctx); err != nil {
 		w.WriteHeader(http.StatusServiceUnavailable)
-		json.NewEncoder(w).Encode(map[string]string{"status": "unhealthy", "error": err.Error()})
+		if encodeErr := json.NewEncoder(w).Encode(map[string]string{"status": "unhealthy", "error": err.Error()}); encodeErr != nil {
+			fmt.Print("Failed to encode health response", "error", encodeErr)
+		}
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
+	if err := json.NewEncoder(w).Encode(map[string]string{"status": "healthy"}); err != nil {
+		fmt.Print("Failed to encode health response", "error", err)
+	}
 }
 
 func sendJSON(w http.ResponseWriter, status int, data interface{}) {

@@ -47,7 +47,12 @@ func (c *BookClient) GetBook(ctx context.Context, id int) (*models.BookInfo, err
 		c.logger.Error("Failed to get book", "id", id, "error", err)
 		return nil, fmt.Errorf("book service unavailable: %w", err)
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			c.logger.Error("Failed to close response body", "error", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
@@ -75,7 +80,12 @@ func (c *BookClient) Health(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("book service health check failed: %w", err)
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			c.logger.Error("Failed to close response body", "error", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("book service unhealthy: status %d", resp.StatusCode)

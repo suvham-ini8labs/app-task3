@@ -40,19 +40,19 @@ func (l *Logger) Sync() {
 }
 
 func (l *Logger) Fatal(msg string, keysAndValues ...interface{}) {
-	l.SugaredLogger.Fatalw(msg, keysAndValues...)
+	l.Fatalw(msg, keysAndValues...)
 	os.Exit(1)
 }
 
 // Implement the Logger interface expected by clients and services
 func (l *Logger) Info(msg string, keysAndValues ...interface{}) {
-	l.SugaredLogger.Infow(msg, keysAndValues...)
+	l.Infow(msg, keysAndValues...)
 }
 
 func (l *Logger) Error(msg string, keysAndValues ...interface{}) {
-	l.SugaredLogger.Errorw(msg, keysAndValues...)
+	l.Errorw(msg, keysAndValues...)
 }
 
 func (l *Logger) Debug(msg string, keysAndValues ...interface{}) {
-	l.SugaredLogger.Debugw(msg, keysAndValues...)
+	l.Debugw(msg, keysAndValues...)
 }

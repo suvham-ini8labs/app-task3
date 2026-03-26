@@ -39,8 +39,7 @@ func New(level, format string) (*Logger, error) {
 func (l *Logger) Sync() {
 	_ = l.SugaredLogger.Sync()
 }
-
 func (l *Logger) Fatal(msg string, keysAndValues ...interface{}) {
-	l.SugaredLogger.Fatalw(msg, keysAndValues...)
+	l.Fatalw(msg, keysAndValues...)
 	os.Exit(1)
 }

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-
+	"log"
 	"user-service/internal/models"
 	"user-service/internal/service"
 	"user-service/pkg/logger"
@@ -77,5 +77,7 @@ func GetEmail(ctx context.Context) (string, bool) {
 func sendError(w http.ResponseWriter, status int, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(models.ErrorResponse{Error: message})
+	if err := json.NewEncoder(w).Encode(models.ErrorResponse{Error: message}); err != nil {
+		log.Print("Failed to encode error response")
+	}
 }

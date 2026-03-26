@@ -40,8 +40,12 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to initialize repository", "error", err)
 	}
-	defer repo.Close()
-
+	defer func() {
+		if err := repo.Close(); err != nil {
+			log.Error("Failed to close repository", "error", err)
+		}
+	}()
+	
 	// Initialize clients
 	bookClient := clients.NewBookClient(cfg.BookServiceURL, cfg.ServiceTimeout, log)
 	userClient := clients.NewUserClient(cfg.UserServiceURL, cfg.ServiceTimeout, log)

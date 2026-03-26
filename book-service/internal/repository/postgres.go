@@ -5,7 +5,6 @@ import (
     "database/sql"
     "fmt"
     "time"
-
     "book-service/internal/models"
     "book-service/internal/config"
 
@@ -103,8 +102,11 @@ func (r *BookRepository) GetAll(ctx context.Context) ([]models.Book, error) {
     if err != nil {
         return nil, fmt.Errorf("failed to query books: %w", err)
     }
-    defer rows.Close()
-
+    defer func() {
+		if err := rows.Close(); err != nil {
+			fmt.Print("Failed to close rows")
+		}
+	}()
     var books []models.Book
     for rows.Next() {
         var book models.Book

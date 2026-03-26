@@ -45,7 +45,12 @@ func (c *UserClient) GetUser(ctx context.Context, id int, token string) (*models
 		c.logger.Error("Failed to get user", "id", id, "error", err)
 		return nil, fmt.Errorf("user service unavailable: %w", err)
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			c.logger.Error("Failed to close response body", "error", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
@@ -99,7 +104,11 @@ func (c *UserClient) Health(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("user service health check failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			c.logger.Error("Failed to close response body", "error", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("user service unhealthy: status %d", resp.StatusCode)

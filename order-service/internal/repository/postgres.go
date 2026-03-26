@@ -111,8 +111,13 @@ func (r *OrderRepository) GetByUserID(ctx context.Context, userID int) ([]models
     if err != nil {
         return nil, fmt.Errorf("failed to query orders: %w", err)
     }
-    defer rows.Close()
-    
+   
+    defer func() {
+		if err := rows.Close(); err != nil {
+			fmt.Print("Failed to close rows", "error", err)
+		}
+	}()
+
     var orders []models.Order
     for rows.Next() {
         var order models.Order
@@ -203,7 +208,12 @@ func (r *OrderRepository) GetStats(ctx context.Context) (map[string]interface{},
     // Get orders by status
     rows, err := r.db.QueryContext(ctx, "SELECT status, COUNT(*) FROM orders GROUP BY status")
     if err == nil {
-        defer rows.Close()
+        defer func() {
+		    if err := rows.Close(); err != nil {
+			    fmt.Print("Failed to close rows", "error", err)
+		    }
+	    }()
+        
         statusCounts := make(map[string]int)
         for rows.Next() {
             var status string
