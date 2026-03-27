@@ -75,7 +75,6 @@ func (h *UserHandlers) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	/*
 	// Get user ID from context (from auth middleware)
 	userID, ok := middleware.GetUserID(r.Context())
 	if !ok {
@@ -91,7 +90,6 @@ func (h *UserHandlers) GetUser(w http.ResponseWriter, r *http.Request) {
 		sendError(w, http.StatusForbidden, "Access denied: you can only access your own profile")
 		return
 	}
-	*/
 
 	user, err := h.service.GetUser(r.Context(), id)
 	if err != nil {

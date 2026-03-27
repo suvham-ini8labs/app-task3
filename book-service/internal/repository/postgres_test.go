@@ -15,7 +15,7 @@ import (
 func TestBookRepository_Create(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()
@@ -53,7 +53,7 @@ func TestBookRepository_Create(t *testing.T) {
 func TestBookRepository_GetByID(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()
@@ -88,7 +88,7 @@ func TestBookRepository_GetByID(t *testing.T) {
 func TestBookRepository_GetAll(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()
@@ -111,7 +111,7 @@ func TestBookRepository_GetAll(t *testing.T) {
 func TestBookRepository_Update(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()
@@ -141,7 +141,7 @@ func TestBookRepository_Update(t *testing.T) {
 func TestBookRepository_Delete(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()
@@ -169,7 +169,7 @@ func TestBookRepository_Delete(t *testing.T) {
 func TestBookRepository_Health(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()
@@ -184,7 +184,7 @@ func TestBookRepository_Health(t *testing.T) {
 func TestBookRepository_GetStats(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &BookRepository{db: db}
 	ctx := context.Background()

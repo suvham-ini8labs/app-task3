@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 type MockUserService struct {
@@ -87,7 +88,8 @@ func TestUserHandlers(t *testing.T) {
 
 		assert.Equal(t, http.StatusCreated, w.Code)
 		var resp models.User
-		json.NewDecoder(w.Body).Decode(&resp)
+		err := json.NewDecoder(w.Body).Decode(&resp)
+		require.NoError(t, err)
 		assert.Equal(t, user.ID, resp.ID)
 		mockService.AssertExpectations(t)
 	})
@@ -120,7 +122,8 @@ func TestUserHandlers(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, w.Code)
 		var loginResp models.LoginResponse
-		json.NewDecoder(w.Body).Decode(&loginResp)
+		err := json.NewDecoder(w.Body).Decode(&loginResp)
+		require.NoError(t, err)
 		assert.Equal(t, "test-token", loginResp.Token)
 		mockService.AssertExpectations(t)
 	})
@@ -141,7 +144,8 @@ func TestUserHandlers(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, w.Code)
 		var resp models.User
-		json.NewDecoder(w.Body).Decode(&resp)
+		err := json.NewDecoder(w.Body).Decode(&resp)
+		require.NoError(t, err)
 		assert.Equal(t, id, resp.ID)
 		mockService.AssertExpectations(t)
 	})

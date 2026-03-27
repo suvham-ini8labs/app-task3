@@ -44,7 +44,7 @@ func TestBookClient_GetBook_Success(t *testing.T) {
 		assert.Equal(t, "GET", r.Method)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(expectedBook)
+		_ = json.NewEncoder(w).Encode(expectedBook)
 	}))
 	defer server.Close()
 
@@ -60,7 +60,7 @@ func TestBookClient_GetBook_Success(t *testing.T) {
 func TestBookClient_GetBook_NotFound(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("not found"))
+		_, _ = w.Write([]byte("not found"))
 	}))
 	defer server.Close()
 

@@ -16,7 +16,7 @@ import (
 func TestOrderRepository_Create_Success(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -51,7 +51,7 @@ func TestOrderRepository_Create_Success(t *testing.T) {
 func TestOrderRepository_GetByID_Success(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -74,7 +74,7 @@ func TestOrderRepository_GetByID_Success(t *testing.T) {
 func TestOrderRepository_GetByID_NotFound(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -92,7 +92,7 @@ func TestOrderRepository_GetByID_NotFound(t *testing.T) {
 func TestOrderRepository_GetByUserID_Success(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -115,7 +115,7 @@ func TestOrderRepository_GetByUserID_Success(t *testing.T) {
 func TestOrderRepository_UpdateStatus_Success(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -135,7 +135,7 @@ func TestOrderRepository_UpdateStatus_Success(t *testing.T) {
 func TestOrderRepository_Delete_Success(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -154,7 +154,7 @@ func TestOrderRepository_Delete_Success(t *testing.T) {
 func TestOrderRepository_Health_Healthy(t *testing.T) {
 	db, mock, err := sqlmock.New(sqlmock.MonitorPingsOption(true))
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 
@@ -169,7 +169,7 @@ func TestOrderRepository_Health_Healthy(t *testing.T) {
 func TestOrderRepository_Health_Unhealthy(t *testing.T) {
 	db, mock, err := sqlmock.New(sqlmock.MonitorPingsOption(true))
 	assert.NoError(t, err)
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	repo := &OrderRepository{db: db}
 

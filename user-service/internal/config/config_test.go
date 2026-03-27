@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestConfigLoad(t *testing.T) {
@@ -20,9 +21,9 @@ func TestConfigLoad(t *testing.T) {
 	})
 
 	t.Run("EnvironmentValues", func(t *testing.T) {
-		os.Setenv("SERVER_PORT", "9090")
-		os.Setenv("DB_HOST", "db-service")
-		os.Setenv("JWT_EXPIRATION", "2h")
+		require.NoError(t, os.Setenv("SERVER_PORT", "9090"))
+		require.NoError(t, os.Setenv("DB_HOST", "db-service"))
+		require.NoError(t, os.Setenv("JWT_EXPIRATION", "2h"))
 		defer os.Clearenv()
 
 		cfg, err := Load()
@@ -33,8 +34,8 @@ func TestConfigLoad(t *testing.T) {
 	})
 
 	t.Run("InvalidDuration", func(t *testing.T) {
-		os.Setenv("JWT_EXPIRATION", "invalid")
-		defer os.Unsetenv("JWT_EXPIRATION")
+		require.NoError(t, os.Setenv("JWT_EXPIRATION", "invalid"))
+		defer func() { require.NoError(t, os.Unsetenv("JWT_EXPIRATION")) }()
 
 		cfg, err := Load()
 		assert.NoError(t, err)

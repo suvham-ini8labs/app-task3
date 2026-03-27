@@ -14,11 +14,11 @@ func TestLoad(t *testing.T) {
 	oldEnvs := make(map[string]string)
 	for _, env := range envs {
 		oldEnvs[env] = os.Getenv(env)
-		os.Unsetenv(env)
+		_ = os.Unsetenv(env)
 	}
 	defer func() {
 		for k, v := range oldEnvs {
-			os.Setenv(k, v)
+			_ = os.Setenv(k, v)
 		}
 	}()
 
@@ -38,9 +38,9 @@ func TestLoad(t *testing.T) {
 	})
 
 	t.Run("custom_values", func(t *testing.T) {
-		os.Setenv("SERVER_PORT", "9090")
-		os.Setenv("DB_HOST", "db")
-		os.Setenv("READ_TIMEOUT", "30s")
+		_ = os.Setenv("SERVER_PORT", "9090")
+		_ = os.Setenv("DB_HOST", "db")
+		_ = os.Setenv("READ_TIMEOUT", "30s")
 		
 		cfg, err := Load()
 		assert.NoError(t, err)
@@ -50,7 +50,7 @@ func TestLoad(t *testing.T) {
 	})
 
 	t.Run("invalid_duration", func(t *testing.T) {
-		os.Setenv("READ_TIMEOUT", "invalid")
+		_ = os.Setenv("READ_TIMEOUT", "invalid")
 		cfg, err := Load()
 		assert.NoError(t, err)
 		assert.Equal(t, 15*time.Second, cfg.ReadTimeout) // Should fall back to default

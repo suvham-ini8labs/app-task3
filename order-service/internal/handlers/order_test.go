@@ -117,7 +117,7 @@ func TestOrderHandlers_CreateOrder_Success(t *testing.T) {
 
 	assert.Equal(t, http.StatusCreated, w.Code)
 	var resp models.OrderResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	_ = json.NewDecoder(w.Body).Decode(&resp)
 	assert.Equal(t, expectedResponse.ID, resp.ID)
 }
 
@@ -161,7 +161,7 @@ func TestOrderHandlers_GetOrder_Success(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, w.Code)
 	var resp models.OrderResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	_ = json.NewDecoder(w.Body).Decode(&resp)
 	assert.Equal(t, orderID, resp.ID)
 }
 

@@ -27,7 +27,7 @@ func TestUserClient_GetUser_Success(t *testing.T) {
 		assert.Equal(t, "Bearer test-token", r.Header.Get("Authorization"))
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(expectedUser)
+		_ = json.NewEncoder(w).Encode(expectedUser)
 	}))
 	defer server.Close()
 
@@ -43,7 +43,7 @@ func TestUserClient_GetUser_Success(t *testing.T) {
 func TestUserClient_GetUser_NotFound(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("not found"))
+		_, _ = w.Write([]byte("not found"))
 	}))
 	defer server.Close()
 

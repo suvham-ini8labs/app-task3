@@ -130,7 +130,7 @@ func (h *BookHandlers) DeleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func (h *BookHandlers) Health(w http.ResponseWriter, r *http.Request) {

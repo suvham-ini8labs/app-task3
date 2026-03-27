@@ -12,6 +12,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 type MockUserService struct {
@@ -61,7 +62,8 @@ func TestAuthMiddleware(t *testing.T) {
 		handler.ServeHTTP(w, r)
 		assert.Equal(t, http.StatusUnauthorized, w.Code)
 		var resp models.ErrorResponse
-		json.NewDecoder(w.Body).Decode(&resp)
+		err := json.NewDecoder(w.Body).Decode(&resp)
+		require.NoError(t, err)
 		assert.Equal(t, "Missing authorization header", resp.Error)
 	})
 
@@ -72,7 +74,8 @@ func TestAuthMiddleware(t *testing.T) {
 		handler.ServeHTTP(w, r)
 		assert.Equal(t, http.StatusUnauthorized, w.Code)
 		var resp models.ErrorResponse
-		json.NewDecoder(w.Body).Decode(&resp)
+		err := json.NewDecoder(w.Body).Decode(&resp)
+		require.NoError(t, err)
 		assert.Equal(t, "Invalid authorization header format", resp.Error)
 	})
 

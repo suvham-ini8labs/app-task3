@@ -78,7 +78,8 @@ func TestBookHandlers_CreateBook(t *testing.T) {
 
 		assert.Equal(t, http.StatusCreated, rr.Code)
 		var book models.Book
-		json.NewDecoder(rr.Body).Decode(&book)
+		err := json.NewDecoder(rr.Body).Decode(&book)
+		assert.NoError(t, err)
 		assert.Equal(t, "Test", book.Title)
 		svc.AssertExpectations(t)
 	})
@@ -122,7 +123,8 @@ func TestBookHandlers_GetBook(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, rr.Code)
 		var book models.Book
-		json.NewDecoder(rr.Body).Decode(&book)
+		err := json.NewDecoder(rr.Body).Decode(&book)
+		assert.NoError(t, err)
 		assert.Equal(t, 1, book.ID)
 		svc.AssertExpectations(t)
 	})
@@ -166,7 +168,8 @@ func TestBookHandlers_ListBooks(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, rr.Code)
 		var res []models.Book
-		json.NewDecoder(rr.Body).Decode(&res)
+		err := json.NewDecoder(rr.Body).Decode(&res)
+		assert.NoError(t, err)
 		assert.Len(t, res, 1)
 		svc.AssertExpectations(t)
 	})
