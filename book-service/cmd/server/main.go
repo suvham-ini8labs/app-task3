@@ -54,6 +54,9 @@ func main() {
 	// Setup router
 	router := mux.NewRouter()
 
+	router.HandleFunc("/books/health", bookHandlers.Health).Methods("GET")
+	router.Handle("/books/metrics", promhttp.Handler())
+	
 	// Book routes
 	router.HandleFunc("/books", bookHandlers.CreateBook).Methods("POST")
 	router.HandleFunc("/books", bookHandlers.ListBooks).Methods("GET")
@@ -62,10 +65,8 @@ func main() {
 	router.HandleFunc("/books/{id}", bookHandlers.DeleteBook).Methods("DELETE")
 
 	// Health check
-	router.HandleFunc("/health", bookHandlers.Health).Methods("GET")
 	
 	// Metrics
-	router.Handle("/metrics", promhttp.Handler())
 
 	// Apply metrics middleware
 	handler := middleware.Metrics(router)

@@ -53,13 +53,14 @@ func main() {
 
 	// Setup router
 	router := mux.NewRouter()
+	
+	router.Handle("/users/metrics", promhttp.Handler())
+	router.HandleFunc("/users/health", userHandlers.Health).Methods("GET")
 
 	// Public routes
 	router.HandleFunc("/users", userHandlers.Register).Methods("POST")
 	router.HandleFunc("/users/login", userHandlers.Login).Methods("POST")
 	router.HandleFunc("/users/{id}", userHandlers.GetUser).Methods("GET")
-	router.HandleFunc("/health", userHandlers.Health).Methods("GET")
-	router.Handle("/metrics", promhttp.Handler())
 
 	// Protected routes with auth middleware
 	authMiddleware := middleware.Auth(userService, log)

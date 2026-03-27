@@ -29,5 +29,3 @@ USER run-user
 EXPOSE 8080
 
 CMD ["/order-service"]
-
-#

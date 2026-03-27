@@ -59,16 +59,17 @@ func main() {
 	// Setup router
 	router := mux.NewRouter()
 
+	router.HandleFunc("/orders/health", orderHandlers.Health).Methods("GET")
+	router.Handle("/orders/metrics", promhttp.Handler())
+	
 	// Order routes (all require auth)
 	router.HandleFunc("/orders", orderHandlers.CreateOrder).Methods("POST")
 	router.HandleFunc("/orders/{id}", orderHandlers.GetOrder).Methods("GET")
 	router.HandleFunc("/orders/user/{userId}", orderHandlers.GetUserOrders).Methods("GET")
 
 	// Health check
-	router.HandleFunc("/health", orderHandlers.Health).Methods("GET")
 	
 	// Metrics
-	router.Handle("/metrics", promhttp.Handler())
 
 	// Apply metrics middleware
 	handler := middleware.Metrics(router)
